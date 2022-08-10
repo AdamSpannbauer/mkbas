@@ -1,4 +1,4 @@
-library(anytime)
+library(shiny)
 
 GOOGLE_SHEETS_URL <- "https://docs.google.com/spreadsheets/d/1wE1edE_splonZxdRVh_hIu4-ZyR1w4XmGVapl9kSzTc/export?format=csv"
 GOOGLE_SHEETS_POLL_SECS <- 5
