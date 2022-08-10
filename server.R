@@ -1,5 +1,6 @@
 library(shiny)
 library(DT)
+library(lubridate)
 
 server <- function(input, output, session) {
   leaderboard_df <- reactivePoll(
@@ -10,6 +11,21 @@ server <- function(input, output, session) {
   )
 
   output$leaderboard_dt <- DT::renderDataTable({
-    leaderboard_df()
+    display_cols <- c("name", "major", "time")
+    display_col_names <- c("Name", "Major", "Time")
+
+    display_df <- leaderboard_df()
+    fastest_times <- aggregate(seconds ~ name + major, display_df, min)
+    fastest_times <- fastest_times[order(fastest_times$seconds), ]
+
+    fastest_times <- merge(
+      fastest_times,
+      display_df,
+      by = c("name", "major", "seconds")
+    )
+
+    fastest_times <- fastest_times[, display_cols]
+    names(fastest_times) <- display_col_names
+    fastest_times
   })
 }

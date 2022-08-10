@@ -16,13 +16,12 @@ read_sheets_df <- function() {
   times_df$timestamp <- as.POSIXlt(times_df$timestamp, format = TIME_STAMP_FORMAT)
 
   split_time <- strsplit(times_df$time, ":")
-  times_df$minutes <- vapply(split_time, `[`, character(1), 1)
+
+  minutes <- vapply(split_time, `[`, character(1), 1)
+  minutes <- as.numeric(minutes)
+
   times_df$seconds <- vapply(split_time, `[`, character(1), 2)
-
-  times_df$minutes <- as.numeric(times_df$minutes)
-  times_df$seconds <- as.numeric(times_df$seconds)
-
-  times_df$time <- NULL
+  times_df$seconds <- 60 * minutes + as.numeric(times_df$seconds)
 
   return(times_df)
 }

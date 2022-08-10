@@ -1,0 +1,26 @@
+body {
+  background-color: black;
+}
+
+@font-face {
+    font-family: leadboard-font;
+    src: url(GoshaSans-Bold.ttf);
+}
+
+.dataTables_wrapper {
+    font-family: leadboard-font;
+    font-size: 16;
+    position: relative;
+    clear: both;
+    *zoom: 1;
+    zoom: 1;
+    color: white;
+}
+
+table.dataTable tr.odd {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+table.dataTable tr.even {
+  background-color: rgba(0, 0, 0, 0.5);
+}
