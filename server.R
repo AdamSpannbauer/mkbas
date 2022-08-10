@@ -26,6 +26,7 @@ server <- function(input, output, session) {
 
     fastest_times <- fastest_times[, display_cols]
     names(fastest_times) <- display_col_names
+    rownames(fastest_times) <- NULL
     fastest_times
   })
 }
