@@ -1,14 +1,50 @@
-body {
-  background-color: black;
-}
-
 @font-face {
-    font-family: leadboard-font;
+    font-family: goshaBold;
     src: url(GoshaSans-Bold.ttf);
 }
 
+@font-face {
+    font-family: goshaLight;
+    src: url(GoshaSans-Ultralight.ttf);
+}
+
+@font-face {
+    font-family: gosha;
+    src: url(GoshaSans-Regular.ttf);
+}
+
+header {
+  font-family: gosha;
+}
+
+.content-wrapper, .right-side {
+  background-color: black;
+  font-family: gosha;
+}
+
+
+.maintitle {
+  text-align: left;
+
+  font-family: goshaBold;
+  font-size: 50px;
+  color: #dd4b39;
+
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #dd4b10;
+}
+
+img {
+  opacity: 0.8;
+}
+
+body {
+  background-color: black;
+  font-family: gosha;
+}
+
 .dataTables_wrapper {
-    font-family: leadboard-font;
+    font-family: goshaBold;
     font-size: 16;
     position: relative;
     clear: both;
