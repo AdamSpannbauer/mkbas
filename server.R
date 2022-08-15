@@ -44,7 +44,7 @@ server <- function(input, output, session) {
   output$leaderboard_dt <- DT::renderDataTable(
     leaderboard_df(),
     options = list(
-      iDisplayLength = 50,
+      iDisplayLength = 10,
       bLengthChange = 0
     )
   ) # renderDataTable

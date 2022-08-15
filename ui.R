@@ -40,15 +40,17 @@ ui <- dashboardPage(
       tabItem(
         tabName = "leaderboard",
         box(
+          width = 7,
           background = "black",
           withSpinner(
             DT::dataTableOutput("leaderboard_dt"),
             type = 3,
             color = "white",
             color.background = RED
-          )
-        ),
+          ) # withSpinner
+        ), # box
         box(
+          width = 5,
           align = "right",
           background = "black",
           fluidRow(
@@ -68,9 +70,31 @@ ui <- dashboardPage(
                 src = "mkspin.gif"
               )
             )
-          )
-        )
-      ),
+          ) # fluidRow
+        ), # box
+        box(
+          width = 5,
+          background = "black",
+          fluidRow(
+            column(
+              width = 6,
+              align = "center",
+              br(),br(),
+              img(
+                src = "discord_qrcode.png",
+                width = "70%"
+              )
+            ),
+            column(
+              width = 6,
+              span(
+                "Join the Stat Nation Discord",
+                class = "maintitle"
+              )
+            )
+          ) # fluidRow
+        ) # box
+      ), # tabItem
       tabItem(
         tabName = "analysis",
         box(
@@ -81,7 +105,7 @@ ui <- dashboardPage(
           background = "black",
           plotOutput("character_chart")
         ),
-      )
+      ) # tabItem
     ) # tabItems
   ) # dashboardBody
 ) # dashboardPage
