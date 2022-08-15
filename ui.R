@@ -1,7 +1,8 @@
 library(shiny)
 library(shinydashboard)
 library(DT)
-
+library(shinycssloaders)
+library(shinyjs)
 
 ui <- dashboardPage(
   title = "BAS MK8",
@@ -27,6 +28,7 @@ ui <- dashboardPage(
     ) # sidebarMenu
   ), # dashboardSidebar
   dashboardBody(
+    useShinyjs(),
     tags$head(
       tags$link(
         rel = "stylesheet",
@@ -39,7 +41,12 @@ ui <- dashboardPage(
         tabName = "leaderboard",
         box(
           background = "black",
-          DT::dataTableOutput("leaderboard_dt")
+          withSpinner(
+            DT::dataTableOutput("leaderboard_dt"),
+            type = 3,
+            color = "white",
+            color.background = RED
+          )
         ),
         box(
           align = "right",
@@ -56,6 +63,7 @@ ui <- dashboardPage(
               width = 6,
               img(
                 # style = "position: relative",
+                class = "gif",
                 width = "100%",
                 src = "mkspin.gif"
               )
@@ -65,7 +73,14 @@ ui <- dashboardPage(
       ),
       tabItem(
         tabName = "analysis",
-        h2("Coming soon...")
+        box(
+          background = "black",
+          plotOutput("controller_chart")
+        ),
+        box(
+          background = "black",
+          plotOutput("character_chart")
+        ),
       )
     ) # tabItems
   ) # dashboardBody

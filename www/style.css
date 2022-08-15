@@ -13,7 +13,7 @@
     src: url(GoshaSans-Regular.ttf);
 }
 
-header {
+header, h1 {
   font-family: gosha;
 }
 
@@ -34,7 +34,7 @@ header {
   -webkit-text-stroke-color: #dd4b10;
 }
 
-img {
+.gif {
   opacity: 0.8;
 }
 

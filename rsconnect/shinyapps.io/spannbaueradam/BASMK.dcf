@@ -5,9 +5,9 @@ account: spannbaueradam
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6766163
-bundleId: 6192733
+bundleId: 6203835
 url: https://spannbaueradam.shinyapps.io/BASMK/
-when: 1660239197.89572
-lastSyncTime: 1660239197.89574
+when: 1660591690.31714
+lastSyncTime: 1660591690.31715
 asMultiple: FALSE
 asStatic: FALSE
