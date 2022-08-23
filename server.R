@@ -50,52 +50,60 @@ server <- function(input, output, session) {
   ) # renderDataTable
 
   output$controller_chart <- renderPlot({
-    summary_df <- aggregate(
-      seconds ~ controller,
-      data = google_sheets_df(),
-      FUN = mean_and_se
-    )
-    summary_df <- do.call(data.frame, summary_df)
-    summary_df <- summary_df[order(summary_df$seconds.mean), ]
-    summary_df$controller <- factor(summary_df$controller, levels = summary_df$controller)
-
-    p <- ggplot(summary_df, aes(controller, seconds.mean)) +
-      geom_bar(stat = "identity", fill = RED) +
-      geom_errorbar(
-        aes(
-          ymin = seconds.mean - seconds.se,
-          ymax = seconds.mean + seconds.se
-        ),
-        color = "white",
-        width = .2
+    p <- mean_and_se_bar_plot(
+      google_sheets_df(),
+      x = "controller", y = "seconds"
+    ) +
+      labs(
+        x = "Controller",
+        y = "Seconds",
+        title = "Which controller is fastest??"
       ) +
-      labs(x = "Controller", y = "Seconds", title = "Which controller is fastest??") +
       theme_mk()
 
     p
   })
 
   output$character_chart <- renderPlot({
-    summary_df <- aggregate(
-      seconds ~ character,
-      data = google_sheets_df(),
-      FUN = mean_and_se
-    )
-    summary_df <- do.call(data.frame, summary_df)
-    summary_df <- summary_df[order(summary_df$seconds.mean), ]
-    summary_df$character <- factor(summary_df$character, levels = summary_df$character)
-
-    p <- ggplot(summary_df, aes(character, seconds.mean)) +
-      geom_bar(stat = "identity", fill = RED) +
-      geom_errorbar(
-        aes(
-          ymin = seconds.mean - seconds.se,
-          ymax = seconds.mean + seconds.se
-        ),
-        color = "white",
-        width = .2
+    p <- mean_and_se_bar_plot(
+      google_sheets_df(),
+      x = "character", y = "seconds"
+    ) +
+      labs(
+        x = "Character",
+        y = "Seconds",
+        title = "Which character is fastest??"
       ) +
-      labs(x = "Character", y = "Seconds", title = "Which character is fastest??") +
+      theme_mk()
+
+    p
+  })
+
+  output$major_chart <- renderPlot({
+    p <- mean_and_se_bar_plot(
+      google_sheets_df(),
+      x = "major", y = "seconds"
+    ) +
+      labs(
+        x = "Major",
+        y = "Seconds",
+        title = "Which major is fastest??"
+      ) +
+      theme_mk()
+
+    p
+  })
+
+  output$car_chart <- renderPlot({
+    p <- mean_and_se_bar_plot(
+      google_sheets_df(),
+      x = "car", y = "seconds"
+    ) +
+      labs(
+        x = "Cart",
+        y = "Seconds",
+        title = "Which cart is fastest??"
+      ) +
       theme_mk()
 
     p

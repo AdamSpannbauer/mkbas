@@ -39,6 +39,32 @@ read_sheets_df <- function() {
 standard_error <- function(x) sd(x) / sqrt(length(x))
 mean_and_se <- function(x) c(mean = mean(x), se = standard_error(x))
 
+mean_and_se_bar_plot <- function(df, x, y) {
+  summary_df <- aggregate(
+    as.formula(paste(y, "~", x)),
+    data = df,
+    FUN = mean_and_se
+  )
+  summary_df <- do.call(data.frame, summary_df)
+
+  names(summary_df) <- c(x, paste0(y, ".mean"), paste0(y, ".se"))
+  summary_df$ymin <- summary_df[[2]] - summary_df[[3]]
+  summary_df$ymax <- summary_df[[2]] + summary_df[[3]]
+
+  summary_df <- summary_df[order(summary_df[[2]]), ]
+  summary_df[[1]] <- factor(summary_df[[1]], levels = summary_df[[1]])
+
+  p <- ggplot(summary_df, aes_string(x, names(summary_df)[2])) +
+    geom_bar(stat = "identity", fill = RED) +
+    geom_errorbar(
+      aes(ymin = ymin, ymax = ymax),
+      color = "white",
+      width = .2
+    )
+
+  p
+}
+
 theme_mk <- function() {
   theme(
     plot.background = element_rect(fill = "black"),
