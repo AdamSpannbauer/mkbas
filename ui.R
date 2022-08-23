@@ -31,6 +31,10 @@ ui <- dashboardPage(
     useShinyjs(),
     tags$head(
       tags$link(
+        rel = "shortcut icon",
+        href = "favicon.png"
+      ),
+      tags$link(
         rel = "stylesheet",
         type = "text/css",
         href = "style.css"
@@ -79,7 +83,7 @@ ui <- dashboardPage(
             column(
               width = 6,
               align = "center",
-              br(),br(),
+              br(), br(),
               img(
                 src = "discord_qrcode.png",
                 width = "70%"
@@ -99,12 +103,20 @@ ui <- dashboardPage(
         tabName = "analysis",
         box(
           background = "black",
-          plotOutput("controller_chart")
+          plotOutput("major_chart")
         ),
         box(
           background = "black",
           plotOutput("character_chart")
         ),
+        box(
+          background = "black",
+          plotOutput("controller_chart")
+        ),
+        box(
+          background = "black",
+          plotOutput("car_chart")
+        )
       ) # tabItem
     ) # tabItems
   ) # dashboardBody
