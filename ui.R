@@ -2,7 +2,8 @@ library(shiny)
 library(shinydashboard)
 library(DT)
 library(shinycssloaders)
-library(shinyjs)
+# library(shinyjs)
+library(shinyWidgets)
 
 ui <- dashboardPage(
   title = "BAS MK8",
@@ -15,20 +16,50 @@ ui <- dashboardPage(
   ), # dashboardHeader
   dashboardSidebar(
     sidebarMenu(
+      id = "sidebar",
       menuItem(
         text = "Leaderboard",
         tabName = "leaderboard",
         icon = icon("flag-checkered")
       ),
       menuItem(
-        text = "Analysis",
+        text = "Distributions",
+        tabName = "dists",
+        icon = icon("chart-area")
+      ),
+      menuItem(
+        text = "Major Comparison",
         tabName = "analysis",
         icon = icon("chart-bar")
+      ),
+      shiny::conditionalPanel(
+        condition = "input.sidebar === 'analysis' || input.sidebar === 'dists'",
+        div(
+          align = "center",
+          hr(),
+          prettySwitch(
+            inputId = "use_minutes",
+            value = TRUE,
+            label = "Use minutes",
+            status = "success",
+            fill = TRUE
+          )
+        )
+      ),
+      div(
+        id = "ba-interest",
+        align = "center",
+        br(), "BA Society interest form:", br(), br(),
+        img(
+          opacity = "50%",
+          src = "google_form_qrcode.png",
+          width = "50%"
+        ), br(), br()
       )
     ) # sidebarMenu
   ), # dashboardSidebar
   dashboardBody(
-    useShinyjs(),
+    # useShinyjs(),
     tags$head(
       tags$link(
         rel = "shortcut icon",
@@ -83,7 +114,6 @@ ui <- dashboardPage(
             column(
               width = 6,
               align = "center",
-              br(), br(),
               img(
                 src = "discord_qrcode.png",
                 width = "70%"
@@ -100,22 +130,33 @@ ui <- dashboardPage(
         ) # box
       ), # tabItem
       tabItem(
+        tabName = "dists",
+        column(width=12,align='center',
+            box(
+          background = "black",
+          plotOutput("overall_disthist")
+        ),
+        box(
+          background = "black",
+          plotOutput("overall_distdens")
+        ),
+        box(
+          background = "black",
+          plotOutput("overall_distbox")
+        )
+        )
+      ),
+      tabItem(
         tabName = "analysis",
         box(
           background = "black",
-          plotOutput("major_chart")
+          width = 6,
+          plotOutput("major_times_chart")
         ),
         box(
           background = "black",
-          plotOutput("character_chart")
-        ),
-        box(
-          background = "black",
-          plotOutput("controller_chart")
-        ),
-        box(
-          background = "black",
-          plotOutput("car_chart")
+          width = 6,
+          plotOutput("major_count_chart")
         )
       ) # tabItem
     ) # tabItems

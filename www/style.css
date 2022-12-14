@@ -13,6 +13,10 @@
     src: url(GoshaSans-Regular.ttf);
 }
 
+hr {
+  border-top: 1px solid #686a70;
+}
+
 header, h1 {
   font-family: gosha;
 }
@@ -32,6 +36,17 @@ header, h1 {
 
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: #dd4b10;
+}
+
+#ba-interest {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #0a1418;
+}
+
+#ba-interest > img {
+  opacity: 0.8;
 }
 
 .gif {
