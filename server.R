@@ -3,6 +3,7 @@ library(DT)
 library(plotly)
 library(ggplot2)
 library(shinyjs)
+library(dplyr)
 
 server <- function(input, output, session) {
   # runjs("toggleCodePosition();")
@@ -15,12 +16,12 @@ server <- function(input, output, session) {
   ) # reactivePoll
 
   leaderboard_df <- reactive({
-    display_cols <- c("name", "major", "time")
-    display_col_names <- c("Name", "Major", "Time")
+    display_cols <- c("first_name", "major", "char_icon_html", "time")
+    display_col_names <- c("Name", "Major", "Character", "Time")
 
     # min time per name + major
     leaderboard_df <- aggregate(
-      seconds ~ name + major,
+      seconds ~ first_name + major,
       data = google_sheets_df(),
       FUN = min
     )
@@ -29,7 +30,7 @@ server <- function(input, output, session) {
     leaderboard_df <- merge(
       leaderboard_df,
       google_sheets_df(),
-      by = c("name", "major", "seconds")
+      by = c("first_name", "major", "seconds")
     )
     leaderboard_df <- leaderboard_df[order(leaderboard_df$seconds), ]
 
@@ -43,11 +44,50 @@ server <- function(input, output, session) {
 
   output$leaderboard_dt <- DT::renderDataTable(
     leaderboard_df(),
+    escape = FALSE,
     options = list(
       iDisplayLength = 10,
       bLengthChange = 0
     )
   ) # renderDataTable
+
+  output$year_comparison_plot <- renderPlotly({
+    p <- ggplot(google_sheets_df(), aes(x = year, y = seconds)) +
+      geom_boxplot(fill = RED) +
+      labs(
+        x = "",
+        y = "Seconds",
+        title = "Times by year"
+      ) +
+      theme_mk()
+
+    ggplotly(p) %>%
+      config(displayModeBar = FALSE)
+  })
+
+  output$major_comparison_plot <- DT::renderDataTable({
+      plot_df <- google_sheets_df() %>%
+        mutate(major = ifelse(major == "Business Analytics", "Business Analytics", "Not Business Analytics")) %>%
+        group_by(major) %>%
+        summarise(
+          avg_seconds = mean(seconds),
+          n_racers = n_distinct(full_name)
+        ) %>%
+        ungroup() %>%
+        arrange(avg_seconds) %>%
+        mutate(major = factor(major, levels = major)) %>%
+        mutate(avg_time = format_seconds(avg_seconds)) %>%
+        select(Major = major, `Avg Time` = avg_time, `N Racers` = n_racers)
+      plot_df
+      # p <- ggplot(plot_df , aes(x = `Major`, y = `Avg Time`)) +
+      #   geom_bar(stat = "identity", fill = RED) +
+      #   labs(title = "Times by Major", x = "") +
+      #   coord_flip() +
+      #   theme_mk()
+      #
+      # ggplotly(p) %>%
+      #   config(displayModeBar = FALSE)
+    })
 
   time_units <- reactive({
     if (input$use_minutes) {
@@ -122,7 +162,7 @@ server <- function(input, output, session) {
     times_df <- times_df[order(-times_df$seconds), ]
 
     plot_df <- aggregate(
-      id ~ major,
+      first_name ~ major,
       google_sheets_df(),
       length
     )
@@ -131,7 +171,7 @@ server <- function(input, output, session) {
     plot_df <- plot_df[!is.na(plot_df$major), ]
 
     p <- ggplot(plot_df, aes(x = n, y = major)) +
-      geom_col(fill = RED, stat = "identity") +
+      geom_col(fill = RED) +
       labs(
         x = "Count",
         y = "",

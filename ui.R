@@ -4,6 +4,7 @@ library(DT)
 library(shinycssloaders)
 # library(shinyjs)
 library(shinyWidgets)
+library(plotly)
 
 ui <- dashboardPage(
   title = "BAS MK8",
@@ -49,11 +50,10 @@ ui <- dashboardPage(
       div(
         id = "ba-interest",
         align = "center",
-        br(), "BA Society interest form:", br(), br(),
+        br(), "Join the BAS Society Discord!", br(), br(),
         img(
-          opacity = "50%",
-          src = "google_form_qrcode.png",
-          width = "50%"
+          src = "bas-discord-qr-code.png",
+          width = "80%"
         ), br(), br()
       )
     ) # sidebarMenu
@@ -90,7 +90,7 @@ ui <- dashboardPage(
           background = "black",
           fluidRow(
             column(
-              width = 6,
+              width = 5,
               span(
                 "Business Analytics Society",
                 class = "maintitle"
@@ -108,42 +108,40 @@ ui <- dashboardPage(
           ) # fluidRow
         ), # box
         box(
-          width = 5,
           background = "black",
-          fluidRow(
-            column(
-              width = 6,
-              align = "center",
-              img(
-                src = "discord_qrcode.png",
-                width = "70%"
-              )
-            ),
-            column(
-              width = 6,
-              span(
-                "Join the Stat Nation Discord",
-                class = "maintitle"
-              )
-            )
-          ) # fluidRow
-        ) # box
+          withSpinner(
+            plotlyOutput("year_comparison_plot"),
+            type = 3,
+            color = "white",
+            color.background = RED
+          ) # withSpinner
+        ),
+        box(
+          background = "black",
+          withSpinner(
+            DT::dataTableOutput("major_comparison_plot"),
+            type = 3,
+            color = "white",
+            color.background = RED
+          ) # withSpinner
+        )
       ), # tabItem
       tabItem(
         tabName = "dists",
-        column(width=12,align='center',
-            box(
-          background = "black",
-          plotOutput("overall_disthist")
-        ),
-        box(
-          background = "black",
-          plotOutput("overall_distdens")
-        ),
-        box(
-          background = "black",
-          plotOutput("overall_distbox")
-        )
+        column(
+          width = 12, align = "center",
+          box(
+            background = "black",
+            plotOutput("overall_disthist")
+          ),
+          box(
+            background = "black",
+            plotOutput("overall_distdens")
+          ),
+          box(
+            background = "black",
+            plotOutput("overall_distbox")
+          )
         )
       ),
       tabItem(

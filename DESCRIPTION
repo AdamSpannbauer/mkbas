@@ -2,7 +2,6 @@ Title: BAS Mario Kart
 Author: Adam Spannbauer
 AuthorUrl: https://adamspannbauer.github.io
 License: MIT
-# DisplayMode: Normal
-DisplayMode: Showcase
+DisplayMode: Normal
 Tags: mario-kart
 Type: Shiny
